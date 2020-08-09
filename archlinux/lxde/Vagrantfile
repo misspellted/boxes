@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# An environment intended for supporting development activities for the
+#   ticketted project.
+
+# Use version "2" configuration syntax.
+Vagrant.configure("2") do |config|
+
+  # Use the lastest ArchLinux distribution
+  config.vm.box = "archlinux/archlinux"
+
+  # VirtualBox-specific configuration.
+  config.vm.provider "virtualbox" do |vb|
+    # Make use of a memorable name, instead of whatever the default is.
+    vb.name = "archlinux-lxde"
+
+    # Enable some features
+    vb.customize ["modifyvm", :id, "--hwvirtex", "on"]
+    vb.customize ["modifyvm", :id, "--pae", "on"]
+
+    # 2 processors to start with
+    vb.cpus = 2
+
+    # 2GB memory to start with too
+    vb.memory = "2048"
+
+    # 256MB seems better than the default 16MB
+    vb.customize ["modifyvm", :id, "--vram", "256"]
+
+    # Target a specific graphics controller
+    vb.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
+
+    # Disable remote display
+    vb.customize ["modifyvm", :id, "--vrde", "off"]
+
+    # Disable recording
+    vb.customize ["modifyvm", :id, "--recording", "off"]
+
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = true
+    
+  end
+
+  # Disable the default /vagrant shared folder.
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Provision the virtual machine using external scripts.
+  # If/when necessary, they can be shared over to the machine
+  #   for easier debugging.
+  # And we might as well as reboot for good measure too.
+  config.vm.provision "shell", path: "bootstrap.sh", reboot: true
+
+end
