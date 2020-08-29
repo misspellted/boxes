@@ -11,14 +11,13 @@ yes | pacman -S pacman-contrib
 # Since pacman allows for custom installation of a group,
 #   the default is what we want (for now), and the input
 #   is not a simple 'y', we're using the --noconfirm flag.
-pacman -S --noconfirm xorg xorg-server xorg-xinit lxde
+pacman -S --noconfirm lxde
 
 # Configure the desktop environment to run
 sudo systemctl start lxdm.service
 sudo systemctl enable lxdm.service
 
 # Replace virtualbox-guest-utils-nox
-yes | pacman -R virtualbox-guest-utils-nox
 yes | pacman -S virtualbox-guest-utils --overwrite "*"
 
 # Refresh VirtualBox
