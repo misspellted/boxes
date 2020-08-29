@@ -51,4 +51,7 @@ Vagrant.configure("2") do |config|
   # And we might as well as reboot for good measure too.
   config.vm.provision "shell", path: "bootstrap.sh", reboot: true
 
+  # Provide an entry point for any additional provisioning actions.
+  config.vm.provision "shell", path: "additional.sh", run: "always"
+
 end
